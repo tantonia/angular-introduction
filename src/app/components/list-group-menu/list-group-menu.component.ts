@@ -17,5 +17,6 @@ export class ListGroupMenuComponent {
     { text: 'Simple Datatable Example', routerLink: 'simple-datatable-example'},
     { text: 'Component Output Example', routerLink: 'component-output-example'},
     { text: 'Template Driven Form Example', routerLink: 'template-driven-form-example'},
+    {text: 'Reactive Form Example', routerLink:'reactive-form-example'},
   ];
 }
