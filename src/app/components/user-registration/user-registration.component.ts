@@ -29,7 +29,7 @@ export class UserRegistrationComponent {
   form = new FormGroup({
     givenName: new FormControl('', Validators.required),
     surName: new FormControl('', Validators.required),
-    email: new FormControl('', [Validators.required, Validators.email]),
+    email: new FormControl('', [Validators.required, Validators.email, /*Validators.pattern()*/]),
     password: new FormControl('', [Validators.required, Validators.minLength(4)]),
     confirmPassword: new FormControl('', [
       Validators.required, Validators.minLength(4)]),
@@ -48,8 +48,8 @@ export class UserRegistrationComponent {
   onSubmit(value: any) {
     console.log(value);
 
-    const user = this.form.value as User
-    delete user['confirmPassword']
+    const user = this.form.value as User;
+    delete user['confirmPassword'];
 
     this.userService.registerUser(user).subscribe({
       next: (response) => {
@@ -67,5 +67,20 @@ export class UserRegistrationComponent {
   registerAnotherUser() {
     this.form.reset();
     this.registrationStatus = { success: false, message: 'Not attempted yet' };
+  }
+
+  check_duplicate_email() {
+    const email = this.form.get('email').value;
+    this.userService.check_duplicate_email(email).subscribe({
+      next: (response) => {
+        console.log(response.msg);
+        this.form.get('email').setErrors(null);
+      },
+      error: (response) => {
+        const message = response.error.msg;
+        console.log(message);
+        this.form.get('email').setErrors({duplicateEmail: true})
+      },
+    })
   }
 }
